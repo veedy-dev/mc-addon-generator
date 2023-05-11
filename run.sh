@@ -1,2 +1,2 @@
 #!/bin/bash
-python3 create_project.py
+python3 main.py

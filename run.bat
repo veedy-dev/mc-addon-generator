@@ -1,1 +1,3 @@
-python create_project.py
+@echo off
+python main.py
+pause
