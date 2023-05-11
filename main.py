@@ -87,7 +87,7 @@ def main():
         }
     }
     create_folder_structure(
-        folder_structure, Path(destination_folder) / "packs")
+        folder_structure, Path(destination_folder))
 
     en_US_lang = "pack.name={}\npack.description={}".format(
         project_name, bp_description)
@@ -119,7 +119,7 @@ def main():
             }
         }
     }
-    create_file_structure(file_structure, Path(destination_folder) / "packs")
+    create_file_structure(file_structure, Path(destination_folder))
 
 
 if __name__ == "__main__":
