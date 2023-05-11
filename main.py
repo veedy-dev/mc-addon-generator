@@ -24,20 +24,23 @@ def create_file_structure(file_structure, root_path):
                 file.write(value)
 
 
-def generate_manifest(author, type_pack, uuid, dependencies=None):
+def generate_manifest(author, type_pack, mainfest_uuid, dependencies=None):
     manifest = {
         "format_version": 2,
+        "metadata": {
+            "authors": [author]
+        },
         "header": {
-            "description": "pack.name",
-            "name": "pack.description",
-            "uuid": uuid,
+            "name": "pack.name",
+            "description": "pack.description",
+            "uuid": mainfest_uuid,
             "version": [1, 0, 0],
             "min_engine_version": [1, 19, 50]
         },
         "modules": [
             {
                 "type": type_pack,
-                "uuid": uuid,
+                "uuid": str(uuid.uuid4()),
                 "version": [1, 0, 0]
             }
         ]
@@ -51,8 +54,6 @@ def generate_manifest(author, type_pack, uuid, dependencies=None):
 
 def main():
     project_name = input("Enter the project name: ")
-    bp_description = f"Behavior Pack for {project_name}"
-    rp_description = f"Resource Pack for {project_name}"
     author = input("Enter the author name (leave empty if none): ")
     bp_uuid = str(uuid.uuid4())
     rp_uuid = str(uuid.uuid4())
@@ -86,13 +87,10 @@ def main():
             "ui": {}
         }
     }
-    create_folder_structure(
-        folder_structure, Path(destination_folder))
+    create_folder_structure(folder_structure, Path(destination_folder))
 
-    BP_en_US_lang = "pack.name={} BP\npack.description={}".format(
-        project_name, bp_description)
-    RP_en_US_lang = "pack.name={} RP\npack.description={}".format(
-        project_name, rp_description)
+    BP_en_US_lang = f"pack.name={project_name} BP\npack.description=Behavior Pack for {project_name}"
+    RP_en_US_lang = f"pack.name={project_name} RP\npack.description=Resource Pack for {project_name}"
 
     file_structure = {
         "BP": {
@@ -119,7 +117,7 @@ def main():
             "textures": {
                 "flipbook_textures.json": "{}",
                 "item_texture.json": "{}",
-                "terrain_texture.json": "{}"
+                "terrain_texture.json": "{}",
             }
         }
     }
