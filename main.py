@@ -106,8 +106,8 @@ def main():
         "RP": {
             "biomes_client.json": "{}",
             "blocks.json": "{}",
-            "font": {"glyph_E1.png": ""},
-            "manifest.json": generate_manifest(project_name, bp_description, author, "data", [{"uuid": rp_uuid, "version": [1, 0, 0]}]),
+            "font": {},
+            "manifest.json": generate_manifest(project_name, bp_description, author, "resources", [{"uuid": rp_uuid, "version": [1, 0, 0]}]),
             "texts": {
                 "en_US.lang": en_US_lang,
                 "languages.json": '{"en_US": "English (US)"}'
