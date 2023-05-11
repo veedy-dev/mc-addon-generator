@@ -102,7 +102,7 @@ def main():
             "manifest.json": generate_manifest(author, "data", [{"uuid": bp_uuid, "version": [1, 0, 0]}]),
             "texts": {
                 "en_US.lang": BP_en_US_lang,
-                "languages.json": '{"en_US": "English (US)"}'
+                "languages.json": '["en_US"]'
             }
         },
         "RP": {
@@ -112,7 +112,7 @@ def main():
             "manifest.json": generate_manifest(author, "resources", [{"uuid": rp_uuid, "version": [1, 0, 0]}]),
             "texts": {
                 "en_US.lang": RP_en_US_lang,
-                "languages.json": '{"en_US": "English (US)"}'
+                "languages.json": '["en_US"]'
             },
             "textures": {
                 "flipbook_textures.json": "{}",
