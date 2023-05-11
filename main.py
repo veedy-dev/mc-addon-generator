@@ -24,20 +24,20 @@ def create_file_structure(file_structure, root_path):
                 file.write(value)
 
 
-def generate_manifest(author, type_pack, dependencies=None):
+def generate_manifest(name, description, author, type_pack, uuid, dependencies=None):
     manifest = {
         "format_version": 2,
         "header": {
-            "name": "pack.name",
-            "description": "pack.description",
-            "uuid": str(uuid.uuid4()),
+            "description": description,
+            "name": name,
+            "uuid": uuid,
             "version": [1, 0, 0],
             "min_engine_version": [1, 19, 50]
         },
         "modules": [
             {
                 "type": type_pack,
-                "uuid": str(uuid.uuid4()),
+                "uuid": uuid,
                 "version": [1, 0, 0]
             }
         ]
@@ -99,7 +99,8 @@ def main():
             "entities": {},
             "functions": {"tick.json": "{}"},
             "loot_tables": {"empty.json": "{}"},
-            "manifest.json": generate_manifest(author, "data", [{"uuid": bp_uuid, "version": [1, 0, 0]}]),
+            "manifest.json": generate_manifest(project_name, BP_en_US_lang, author, "data", bp_uuid,
+                                               [{"uuid": rp_uuid, "version": [1, 0, 0]}]),
             "texts": {
                 "en_US.lang": BP_en_US_lang,
                 "languages.json": '["en_US"]'
@@ -109,7 +110,8 @@ def main():
             "biomes_client.json": "{}",
             "blocks.json": "{}",
             "font": {},
-            "manifest.json": generate_manifest(author, "resources", [{"uuid": rp_uuid, "version": [1, 0, 0]}]),
+            "manifest.json": generate_manifest(project_name, RP_en_US_lang, author, "resources", rp_uuid,
+                                               [{"uuid": bp_uuid, "version": [1, 0, 0]}]),
             "texts": {
                 "en_US.lang": RP_en_US_lang,
                 "languages.json": '["en_US"]'
