@@ -24,15 +24,15 @@ def create_file_structure(file_structure, root_path):
                 file.write(value)
 
 
-def generate_manifest(name, description, author, type_pack, dependencies=None):
+def generate_manifest(author, type_pack, dependencies=None):
     manifest = {
         "format_version": 2,
         "header": {
-            "description": description,
-            "name": name,
+            "name": "pack.name",
+            "description": "pack.description",
             "uuid": str(uuid.uuid4()),
             "version": [1, 0, 0],
-            "min_engine_version": [1, 16, 0]
+            "min_engine_version": [1, 19, 50]
         },
         "modules": [
             {
@@ -89,17 +89,19 @@ def main():
     create_folder_structure(
         folder_structure, Path(destination_folder))
 
-    en_US_lang = "pack.name={}\npack.description={}".format(
+    BP_en_US_lang = "pack.name={} BP\npack.description={}".format(
         project_name, bp_description)
+    RP_en_US_lang = "pack.name={} RP\npack.description={}".format(
+        project_name, rp_description)
 
     file_structure = {
         "BP": {
             "entities": {},
             "functions": {"tick.json": "{}"},
             "loot_tables": {"empty.json": "{}"},
-            "manifest.json": generate_manifest(project_name, bp_description, author, "data", [{"uuid": rp_uuid, "version": [1, 0, 0]}]),
+            "manifest.json": generate_manifest(author, "data", [{"uuid": bp_uuid, "version": [1, 0, 0]}]),
             "texts": {
-                "en_US.lang": en_US_lang,
+                "en_US.lang": BP_en_US_lang,
                 "languages.json": '{"en_US": "English (US)"}'
             }
         },
@@ -107,9 +109,9 @@ def main():
             "biomes_client.json": "{}",
             "blocks.json": "{}",
             "font": {},
-            "manifest.json": generate_manifest(project_name, bp_description, author, "resources", [{"uuid": rp_uuid, "version": [1, 0, 0]}]),
+            "manifest.json": generate_manifest(author, "resources", [{"uuid": rp_uuid, "version": [1, 0, 0]}]),
             "texts": {
-                "en_US.lang": en_US_lang,
+                "en_US.lang": RP_en_US_lang,
                 "languages.json": '{"en_US": "English (US)"}'
             },
             "textures": {
