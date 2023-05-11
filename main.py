@@ -24,12 +24,12 @@ def create_file_structure(file_structure, root_path):
                 file.write(value)
 
 
-def generate_manifest(name, description, author, type_pack, uuid, dependencies=None):
+def generate_manifest(author, type_pack, uuid, dependencies=None):
     manifest = {
         "format_version": 2,
         "header": {
-            "description": description,
-            "name": name,
+            "description": "pack.name",
+            "name": "pack.description",
             "uuid": uuid,
             "version": [1, 0, 0],
             "min_engine_version": [1, 19, 50]
@@ -99,7 +99,7 @@ def main():
             "entities": {},
             "functions": {"tick.json": "{}"},
             "loot_tables": {"empty.json": "{}"},
-            "manifest.json": generate_manifest(project_name, BP_en_US_lang, author, "data", bp_uuid,
+            "manifest.json": generate_manifest(author, "data", bp_uuid,
                                                [{"uuid": rp_uuid, "version": [1, 0, 0]}]),
             "texts": {
                 "en_US.lang": BP_en_US_lang,
@@ -110,7 +110,7 @@ def main():
             "biomes_client.json": "{}",
             "blocks.json": "{}",
             "font": {},
-            "manifest.json": generate_manifest(project_name, RP_en_US_lang, author, "resources", rp_uuid,
+            "manifest.json": generate_manifest(author, "resources", rp_uuid,
                                                [{"uuid": bp_uuid, "version": [1, 0, 0]}]),
             "texts": {
                 "en_US.lang": RP_en_US_lang,
