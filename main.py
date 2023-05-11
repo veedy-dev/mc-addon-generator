@@ -110,17 +110,28 @@ def main():
             "font": {},
             "manifest.json": generate_manifest(author, "resources", rp_uuid,
                                                [{"uuid": bp_uuid, "version": [1, 0, 0]}]),
+            "sounds": {
+                "sound_definitions.json": json.dumps({
+                    "format_version": "1.14.0",
+                    "sound_definitions": {}
+                }, indent=4)
+            },
             "texts": {
                 "en_US.lang": RP_en_US_lang,
                 "languages.json": '["en_US"]'
             },
             "textures": {
                 "flipbook_textures.json": "{}",
-                "item_texture.json": "{}",
+                "item_texture.json": json.dumps({
+                    "resource_pack_name": project_name,
+                    "texture_name": "atlas.items",
+                    "texture_data": {}
+                }, indent=4),
                 "terrain_texture.json": "{}",
             }
         }
     }
+
     create_file_structure(file_structure, Path(destination_folder))
 
 
