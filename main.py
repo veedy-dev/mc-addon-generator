@@ -78,6 +78,7 @@ def main():
             "animations": {},
             "animation_controllers": {},
             "entity": {},
+            "items": {},
             "font": {},
             "models": {"entity": {}},
             "particles": {},
