@@ -96,7 +96,7 @@ def main():
     file_structure = {
         "BP": {
             "entities": {},
-            "functions": {"tick.json": "{}"},
+            "functions": {"tick.json": json.dumps({"values": []})},
             "loot_tables": {"empty.json": "{}"},
             "manifest.json": generate_manifest(author, "data", bp_uuid,
                                                [{"uuid": rp_uuid, "version": [1, 0, 0]}]),
