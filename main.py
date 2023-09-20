@@ -35,7 +35,7 @@ def generate_manifest(author, type_pack, mainfest_uuid, dependencies=None):
             "description": "pack.description",
             "uuid": mainfest_uuid,
             "version": [1, 0, 0],
-            "min_engine_version": [1, 19, 50]
+            "min_engine_version": [1, 20, 30]
         },
         "modules": [
             {
