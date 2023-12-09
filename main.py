@@ -25,6 +25,8 @@ def create_file_structure(file_structure, root_path):
 
 
 def generate_manifest(author, type_pack, mainfest_uuid, dependencies=None, min_engine_version=[1, 20, 50]):
+    if isinstance(min_engine_version, str):
+        min_engine_version = [int(x) for x in min_engine_version.split(".")]
     manifest = {
         "format_version": 2,
         "metadata": {
@@ -49,8 +51,6 @@ def generate_manifest(author, type_pack, mainfest_uuid, dependencies=None, min_e
         manifest["metadata"] = {"authors": [author]}
     if dependencies:
         manifest["dependencies"] = dependencies
-    if isinstance(min_engine_version, str):
-        min_engine_version = [int(x) for x in min_engine_version.split(".")]
     return json.dumps(manifest, indent=4)
 
 
