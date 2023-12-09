@@ -24,7 +24,7 @@ def create_file_structure(file_structure, root_path):
                 file.write(value)
 
 
-def generate_manifest(author, type_pack, mainfest_uuid, dependencies=None):
+def generate_manifest(author, type_pack, mainfest_uuid, dependencies=None, min_engine_version=[1, 20, 50]):
     manifest = {
         "format_version": 2,
         "metadata": {
@@ -35,7 +35,7 @@ def generate_manifest(author, type_pack, mainfest_uuid, dependencies=None):
             "description": "pack.description",
             "uuid": mainfest_uuid,
             "version": [1, 0, 0],
-            "min_engine_version": [1, 19, 50]
+            "min_engine_version": min_engine_version
         },
         "modules": [
             {
@@ -49,11 +49,17 @@ def generate_manifest(author, type_pack, mainfest_uuid, dependencies=None):
         manifest["metadata"] = {"authors": [author]}
     if dependencies:
         manifest["dependencies"] = dependencies
+    if isinstance(min_engine_version, str):
+        min_engine_version = [int(x) for x in min_engine_version.split(".")]
     return json.dumps(manifest, indent=4)
 
 
 def main():
     project_name = input("Enter the project name: ")
+    min_engine_version = input(
+        "Enter the minimum engine version (e.g., 1.20.50): ")
+    if not min_engine_version:
+        min_engine_version = "1.20.50"
     author = input("Enter the author name (leave empty if none): ")
     bp_uuid = str(uuid.uuid4())
     rp_uuid = str(uuid.uuid4())
@@ -62,7 +68,6 @@ def main():
         "Enter the destination folder for the generated project (leave empty for the current folder): ")
     if not destination_folder:
         destination_folder = "."
-
     folder_structure = {
         "BP": {
             "animations": {},
@@ -99,7 +104,7 @@ def main():
             "functions": {"tick.json": json.dumps({"values": []})},
             "loot_tables": {"empty.json": "{}"},
             "manifest.json": generate_manifest(author, "data", bp_uuid,
-                                               [{"uuid": rp_uuid, "version": [1, 0, 0]}]),
+                                               [{"uuid": rp_uuid, "version": [1, 0, 0]}], min_engine_version),
             "texts": {
                 "en_US.lang": BP_en_US_lang,
                 "languages.json": '["en_US"]'
@@ -110,7 +115,7 @@ def main():
             "blocks.json": "{}",
             "font": {},
             "manifest.json": generate_manifest(author, "resources", rp_uuid,
-                                               [{"uuid": bp_uuid, "version": [1, 0, 0]}]),
+                                               [{"uuid": bp_uuid, "version": [1, 0, 0]}], min_engine_version),
             "sounds": {
                 "sound_definitions.json": json.dumps({
                     "format_version": "1.14.0",
