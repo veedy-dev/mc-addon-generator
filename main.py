@@ -24,9 +24,15 @@ def create_file_structure(file_structure, root_path):
                 file.write(value)
 
 
-def generate_manifest(author, type_pack, mainfest_uuid, dependencies=None, min_engine_version=[1, 20, 50]):
+def generate_manifest(author, type_pack, mainfest_uuid, min_engine_version=[1, 20, 50]):
+    server_version = input(
+        "Enter the @minecraft/server version (default 1.7.0): ") or "1.7.0"
+    server_ui_version = input(
+        "Enter the @minecraft/server-ui version (default 1.1.0): ") or "1.1.0"
+
     if isinstance(min_engine_version, str):
         min_engine_version = [int(x) for x in min_engine_version.split(".")]
+
     manifest = {
         "format_version": 2,
         "metadata": {
@@ -44,13 +50,32 @@ def generate_manifest(author, type_pack, mainfest_uuid, dependencies=None, min_e
                 "type": type_pack,
                 "uuid": str(uuid.uuid4()),
                 "version": [1, 0, 0]
+            },
+            {
+                "description": "Scripting Module",
+                "type": "script",
+                "uuid": str(uuid.uuid4()),
+                "version": [1, 0, 0],
+                "language": "javascript",
+                "entry": "scripts/main.js"
+            }
+        ],
+        "dependencies": [
+            {
+                "uuid": str(uuid.uuid4()),
+                "version": [1, 0, 0]
+            },
+            {
+                "module_name": "@minecraft/server",
+                "version": [int(v) for v in server_version.split('.')]
+            },
+            {
+                "module_name": "@minecraft/server-ui",
+                "version": [int(v) for v in server_ui_version.split('.')]
             }
         ]
     }
-    if author:
-        manifest["metadata"] = {"authors": [author]}
-    if dependencies:
-        manifest["dependencies"] = dependencies
+
     return json.dumps(manifest, indent=4)
 
 
@@ -77,7 +102,11 @@ def main():
             "items": {},
             "loot_tables": {},
             "recipes": {},
-            "texts": {}
+            "texts": {},
+            "loot_tables": {},
+            "functions": {},
+            "spawn_rules": {},
+            "scripts": {}
         },
         "RP": {
             "animations": {},
@@ -98,6 +127,18 @@ def main():
     BP_en_US_lang = f"pack.name={project_name} BP\npack.description=Behavior Pack for {project_name}"
     RP_en_US_lang = f"pack.name={project_name} RP\npack.description=Resource Pack for {project_name}"
 
+    main_js_template = """import { system, world } from '@minecraft/server'
+    world.afterEvents.entitySpawn.subscribe((event) => {
+        console.warn(event.entity.typeId + ' spawned!')
+    })
+
+    system.run(() => {
+        // Code in here will be run every tick
+    })
+
+    // See more at https://wiki.bedrock.dev/scripting/script-server.html
+    """
+
     file_structure = {
         "BP": {
             "entities": {},
@@ -108,6 +149,9 @@ def main():
             "texts": {
                 "en_US.lang": BP_en_US_lang,
                 "languages.json": '["en_US"]'
+            },
+            "scripts": {
+                "main.js": main_js_template
             }
         },
         "RP": {
@@ -134,7 +178,8 @@ def main():
                     "texture_data": {}
                 }, indent=4),
                 "terrain_texture.json": "{}",
-            }
+            },
+            "sounds.json": json.dumps({"entity_sounds": {"entities": {}}}, indent=4)
         }
     }
 
